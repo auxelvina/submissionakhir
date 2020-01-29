@@ -108,7 +108,7 @@ $url = $result->getBlobs()->getUrl()
     <br><br>
     Image to analyze:
     <input type="text" name="inputImage" id="inputImage"
-        value="<?php echo $url ?>" />
+        value="" />
     <button onclick="processImage()">Analyze image</button>
     <br><br>
     <div id="wrapper" style="width:1020px; display:table;">

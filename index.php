@@ -17,12 +17,12 @@ if (isset($_POST['submit'])) {
 	$content = fopen($_FILES["fileToUpload"]["tmp_name"], "r");
 	// echo fread($content, filesize($fileToUpload));
 	$blobClient->createBlockBlob($containerName, $fileToUpload, $content);
+	$up = 'https://elvinastorage.blob.core.windows.net/elvinacontainer/' . $_FILES["fileToUpload"]["name"];
 	header("Location: index.php");
 }
 $listBlobsOptions = new ListBlobsOptions();
 $listBlobsOptions->setPrefix("");
 $result = $blobClient->listBlobs($containerName, $listBlobsOptions);
-$up = 'https://elvinastorage.blob.core.windows.net/elvinacontainer/' . $_FILES["fileToUpload"]["name"];
 ?> 
 <!DOCTYPE html>
     <html>

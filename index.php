@@ -22,7 +22,6 @@ if (isset($_POST['submit'])) {
 $listBlobsOptions = new ListBlobsOptions();
 $listBlobsOptions->setPrefix("");
 $result = $blobClient->listBlobs($containerName, $listBlobsOptions);
-$url = $result->getBlobs()->getUrl();
 ?>  
 
 <!DOCTYPE html>
@@ -108,7 +107,7 @@ $url = $result->getBlobs()->getUrl();
     <br><br>
     Image to analyze:
     <input type="text" name="inputImage" id="inputImage"
-        value="<?php echo $url ?>" />
+        value="http://upload.wikimedia.org/wikipedia/commons/3/3c/Shaki_waterfall.jpg" />
     <button onclick="processImage()">Analyze image</button>
     <br><br>
     <div id="wrapper" style="width:1020px; display:table;">

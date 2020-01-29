@@ -22,7 +22,8 @@ if (isset($_POST['submit'])) {
 $listBlobsOptions = new ListBlobsOptions();
 $listBlobsOptions->setPrefix("");
 $result = $blobClient->listBlobs($containerName, $listBlobsOptions);
-$kev = "testtttttttt";
+$result->getBlobs() as $blob;
+$kev = $blob->getUrl();
 ?>  
 
 <!DOCTYPE html>

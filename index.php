@@ -22,6 +22,7 @@ if (isset($_POST['submit'])) {
 $listBlobsOptions = new ListBlobsOptions();
 $listBlobsOptions->setPrefix("");
 $result = $blobClient->listBlobs($containerName, $listBlobsOptions);
+$kev = "testtttttttt";
 ?>  
 
 <!DOCTYPE html>
@@ -106,7 +107,7 @@ $result = $blobClient->listBlobs($containerName, $listBlobsOptions);
 	</form>
     <br><br>
     Image to analyze:
-    <input type="text" name="inputImage" id="inputImage" />
+    <input type="text" name="inputImage" id="inputImage" value="<?php echo $kev ?>" readonly/>
     <button onclick="processImage()">Analyze image</button>
     <br><br>
     <div id="wrapper" style="width:1020px; display:table;">

@@ -17,7 +17,8 @@ if (isset($_POST['submit'])) {
 	$content = fopen($_FILES["fileToUpload"]["tmp_name"], "r");
 	// echo fread($content, filesize($fileToUpload));
 	$blobClient->createBlockBlob($containerName, $fileToUpload, $content);
-	$up = 'https://elvinastorage.blob.core.windows.net/elvinacontainer/' . strtolower($_FILES["fileToUpload"]["name"]);
+	$name = strtolower($_FILES["fileToUpload"]["name"]);
+	$up = 'https://elvinastorage.blob.core.windows.net/elvinacontainer/' . $_FILES["fileToUpload"]["name"];
 	header("Location: index.php");
 }
 ?> 

@@ -18,12 +18,8 @@ if (isset($_POST['submit'])) {
 	// echo fread($content, filesize($fileToUpload));
 	$blobClient->createBlockBlob($containerName, $fileToUpload, $content);
 	$up = 'https://elvinastorage.blob.core.windows.net/elvinacontainer/' . $_FILES["fileToUpload"]["name"];
-	echo $up;
 	header("Location: index.php");
 }
-$listBlobsOptions = new ListBlobsOptions();
-$listBlobsOptions->setPrefix("");
-$result = $blobClient->listBlobs($containerName, $listBlobsOptions);
 ?> 
 <!DOCTYPE html>
     <html>
@@ -107,7 +103,7 @@ $result = $blobClient->listBlobs($containerName, $listBlobsOptions);
 	</form>
     <br><br>
     Image to analyze:
-    <input type="text" name="inputImage" id="inputImage" value="<?php echo $up; ?>" readonly/>
+    <input type="text" name="inputImage" id="inputImage" value="<?php echo htmlentities($up); ?>" readonly/>
     <button onclick="processImage()">Analyze image</button>
     <br><br>
     <div id="wrapper" style="width:1020px; display:table;">

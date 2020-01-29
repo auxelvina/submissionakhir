@@ -1,30 +1,3 @@
-<?php
-require_once 'vendor/autoload.php';
-require_once "./random_string.php";
-
-use MicrosoftAzure\Storage\Blob\BlobRestProxy;
-use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
-use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
-use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
-use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
-
-$connectionString = "DefaultEndpointsProtocol=https;AccountName=elvinastorage;AccountKey=WXJfJYfnmyb4mvxRacrurB5op5iUB4DkrWelhZ+xiOt9t1w9LqFyprEPzbU2EnnBIp69uqDvtebXpJ+AehFPhw==;EndpointSuffix=core.windows.net";
-$containerName = "elvinacontainer";
-// Create blob client.
-$blobClient = BlobRestProxy::createBlobService($connectionString);
-if (isset($_POST['submit'])) {
-	$fileToUpload = strtolower($_FILES["fileToUpload"]["name"]);
-	$content = fopen($_FILES["fileToUpload"]["tmp_name"], "r");
-	// echo fread($content, filesize($fileToUpload));
-	$blobClient->createBlockBlob($containerName, $fileToUpload, $content);
-	header("Location: index.php");
-}
-$listBlobsOptions = new ListBlobsOptions();
-$listBlobsOptions->setPrefix("");
-$result = $blobClient->listBlobs($containerName, $listBlobsOptions);
-$kev = "testtttttttttt";
-?>  
-
 <!DOCTYPE html>
     <html>
     <head>
@@ -107,7 +80,7 @@ $kev = "testtttttttttt";
 	</form>
     <br><br>
     Image to analyze:
-    <input type="text" name="inputImage" id="inputImage" value="<?php echo $kev ?>" readonly/>
+    <input type="text" name="inputImage" id="inputImage" value="<?php echo $up ?>" readonly/>
     <button onclick="processImage()">Analyze image</button>
     <br><br>
     <div id="wrapper" style="width:1020px; display:table;">
@@ -125,3 +98,30 @@ $kev = "testtttttttttt";
     </div>
     </body>
     </html>
+
+<?php
+require_once 'vendor/autoload.php';
+require_once "./random_string.php";
+
+use MicrosoftAzure\Storage\Blob\BlobRestProxy;
+use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
+use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
+use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
+use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
+
+$connectionString = "DefaultEndpointsProtocol=https;AccountName=elvinastorage;AccountKey=WXJfJYfnmyb4mvxRacrurB5op5iUB4DkrWelhZ+xiOt9t1w9LqFyprEPzbU2EnnBIp69uqDvtebXpJ+AehFPhw==;EndpointSuffix=core.windows.net";
+$containerName = "elvinacontainer";
+// Create blob client.
+$blobClient = BlobRestProxy::createBlobService($connectionString);
+if (isset($_POST['submit'])) {
+	$fileToUpload = strtolower($_FILES["fileToUpload"]["name"]);
+	$content = fopen($_FILES["fileToUpload"]["tmp_name"], "r");
+	// echo fread($content, filesize($fileToUpload));
+	$blobClient->createBlockBlob($containerName, $fileToUpload, $content);
+	header("Location: index.php");
+}
+$listBlobsOptions = new ListBlobsOptions();
+$listBlobsOptions->setPrefix("");
+$result = $blobClient->listBlobs($containerName, $listBlobsOptions);
+$up = 'https://elvinastorage.blob.core.windows.net/elvinacontainer/' . $_FILES["fileToUpload"]["name"];
+?> 

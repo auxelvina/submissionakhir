@@ -103,7 +103,7 @@ if (isset($_POST['submit'])) {
 	</form>
     <br><br>
     Image to analyze:
-    <input type="text" name="inputImage" id="inputImage" value="<?php echo $up; ?>" readonly />
+    <input type="text" name="inputImage" id="inputImage" value="<?php echo $up; ?>" />
     <button onclick="processImage()">Analyze image</button>
     <br><br>
     <div id="wrapper" style="width:1020px; display:table;">

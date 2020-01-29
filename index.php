@@ -1,4 +1,30 @@
-    <!DOCTYPE html>
+<?php
+require_once 'vendor/autoload.php';
+require_once "./random_string.php";
+
+use MicrosoftAzure\Storage\Blob\BlobRestProxy;
+use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
+use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
+use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
+use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
+
+$connectionString = "DefaultEndpointsProtocol=https;AccountName=elvinastorage;AccountKey=WXJfJYfnmyb4mvxRacrurB5op5iUB4DkrWelhZ+xiOt9t1w9LqFyprEPzbU2EnnBIp69uqDvtebXpJ+AehFPhw==;EndpointSuffix=core.windows.net";
+$containerName = "elvinacontainer";
+// Create blob client.
+$blobClient = BlobRestProxy::createBlobService($connectionString);
+if (isset($_POST['submit'])) {
+	$fileToUpload = strtolower($_FILES["fileToUpload"]["name"]);
+	$content = fopen($_FILES["fileToUpload"]["tmp_name"], "r");
+	// echo fread($content, filesize($fileToUpload));
+	$blobClient->createBlockBlob($containerName, $fileToUpload, $content);
+	header("Location: index.php");
+}
+$listBlobsOptions = new ListBlobsOptions();
+$listBlobsOptions->setPrefix("");
+$result = $blobClient->listBlobs($containerName, $listBlobsOptions);
+?>  
+
+<!DOCTYPE html>
     <html>
     <head>
         <title>Analyze Sample</title>
@@ -72,6 +98,12 @@
      
     <h1>Analyze image:</h1>
     Enter the URL to an image, then click the <strong>Analyze image</strong> button.
+    <br><br>
+	Image to upload:
+    <form class="d-flex justify-content-lefr" action="index.php" method="post" enctype="multipart/form-data">
+				<input type="file" name="fileToUpload" accept=".jpeg,.jpg,.png" required="">
+				<input type="submit" name="submit" value="Upload">
+	</form>
     <br><br>
     Image to analyze:
     <input type="text" name="inputImage" id="inputImage"

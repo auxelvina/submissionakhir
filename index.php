@@ -1,3 +1,29 @@
+<?php
+require_once 'vendor/autoload.php';
+require_once "./random_string.php";
+
+use MicrosoftAzure\Storage\Blob\BlobRestProxy;
+use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
+use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
+use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
+use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
+
+$connectionString = "DefaultEndpointsProtocol=https;AccountName=elvinastorage;AccountKey=WXJfJYfnmyb4mvxRacrurB5op5iUB4DkrWelhZ+xiOt9t1w9LqFyprEPzbU2EnnBIp69uqDvtebXpJ+AehFPhw==;EndpointSuffix=core.windows.net";
+$containerName = "elvinacontainer";
+// Create blob client.
+$blobClient = BlobRestProxy::createBlobService($connectionString);
+if (isset($_POST['submit'])) {
+	$fileToUpload = strtolower($_FILES["fileToUpload"]["name"]);
+	$content = fopen($_FILES["fileToUpload"]["tmp_name"], "r");
+	// echo fread($content, filesize($fileToUpload));
+	$blobClient->createBlockBlob($containerName, $fileToUpload, $content);
+	header("Location: index.php");
+}
+$listBlobsOptions = new ListBlobsOptions();
+$listBlobsOptions->setPrefix("");
+$result = $blobClient->listBlobs($containerName, $listBlobsOptions);
+$up = 'https://elvinastorage.blob.core.windows.net/elvinacontainer/' . $_FILES["fileToUpload"]["name"];
+?> 
 <!DOCTYPE html>
     <html>
     <head>
@@ -99,29 +125,4 @@
     </body>
     </html>
 
-<?php
-require_once 'vendor/autoload.php';
-require_once "./random_string.php";
 
-use MicrosoftAzure\Storage\Blob\BlobRestProxy;
-use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
-use MicrosoftAzure\Storage\Blob\Models\ListBlobsOptions;
-use MicrosoftAzure\Storage\Blob\Models\CreateContainerOptions;
-use MicrosoftAzure\Storage\Blob\Models\PublicAccessType;
-
-$connectionString = "DefaultEndpointsProtocol=https;AccountName=elvinastorage;AccountKey=WXJfJYfnmyb4mvxRacrurB5op5iUB4DkrWelhZ+xiOt9t1w9LqFyprEPzbU2EnnBIp69uqDvtebXpJ+AehFPhw==;EndpointSuffix=core.windows.net";
-$containerName = "elvinacontainer";
-// Create blob client.
-$blobClient = BlobRestProxy::createBlobService($connectionString);
-if (isset($_POST['submit'])) {
-	$fileToUpload = strtolower($_FILES["fileToUpload"]["name"]);
-	$content = fopen($_FILES["fileToUpload"]["tmp_name"], "r");
-	// echo fread($content, filesize($fileToUpload));
-	$blobClient->createBlockBlob($containerName, $fileToUpload, $content);
-	header("Location: index.php");
-}
-$listBlobsOptions = new ListBlobsOptions();
-$listBlobsOptions->setPrefix("");
-$result = $blobClient->listBlobs($containerName, $listBlobsOptions);
-$up = 'https://elvinastorage.blob.core.windows.net/elvinacontainer/' . $_FILES["fileToUpload"]["name"];
-?> 
